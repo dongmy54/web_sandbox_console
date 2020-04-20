@@ -4,5 +4,5 @@ require "web_sandbox_console/common.rb"
 require "web_sandbox_console/sandbox"
 
 module WebSandboxConsole
-  # Your code goes here...
+  extend Common
 end

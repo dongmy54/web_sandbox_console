@@ -16,16 +16,15 @@ module WebSandboxConsole
     def runner_code
       str =<<-CODE
         result = nil
-        logger = Logger.new("#{Rails.root}/log/web_sandbox_console.log")
         begin
           ActiveRecord::Base.transaction(requires_new: true) do
             result = #{self.code}
             raise ActiveRecord::Rollback
           end
         rescue Exception => e
-          logger.info "#{self.uuid}:" + e.message
+          WebSandboxConsole.log_p(e, "#{self.uuid}")
         end
-        logger.info "#{self.uuid}:" + result.inspect
+        WebSandboxConsole.log_p(result, "#{self.uuid}")
       CODE
     end
 
