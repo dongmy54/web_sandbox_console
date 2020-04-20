@@ -1,1 +1,9 @@
-控制台 index page
+控制台 index 
+<%= form_tag(web_sandbox_console.eval_code_path, remote: true)  do %>
+  <%= text_area_tag :code, '', cols: 40, rows: 10 %>
+  <%= submit_tag '提交' %>
+<% end %>
+<%= button_tag '清除', type: 'button', onclick: "$('.output_content').empty();" %>
+
+<div class="output_content">
+</div>
