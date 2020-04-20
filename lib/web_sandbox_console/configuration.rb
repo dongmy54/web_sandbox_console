@@ -10,6 +10,20 @@ module WebSandboxConsole
   # 日志路径
   mattr_accessor :console_log_path
 
+  # 内置 实例方法 黑名单
+  INSTANT_METOD_BUILT_IN_BLACKLIST = {
+    Kernel: %i(system exec `),
+    File: %i(chmod chown)
+  }.freeze
+
+  # 内置 类方法 黑名单
+  CLASS_METHOD_BUILT_IN_BLACKLIST = {
+    Kernel: %i(system exec `),
+    File: %i(chmod chown new open delete read write),
+    Dir: %i(new delete mkdir)
+  }.freeze
+
+  
   def self.setup
     yield self
   end

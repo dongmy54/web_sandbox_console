@@ -15,6 +15,7 @@ module WebSandboxConsole
 
     def runner_code
       str =<<-CODE
+        WebSandboxConsole.init_safe_env
         result = nil
         begin
           ActiveRecord::Base.transaction(requires_new: true) do
