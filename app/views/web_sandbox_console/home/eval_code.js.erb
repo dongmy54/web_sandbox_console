@@ -1,1 +1,3 @@
-$(".output_content").append('<p><%= escape_javascript @result %></p>');
+<% @results.each do |result| %>
+  $(".output_content").append('<p><%= escape_javascript result %></p>');
+<% end %>

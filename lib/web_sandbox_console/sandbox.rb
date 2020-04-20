@@ -29,11 +29,11 @@ module WebSandboxConsole
     end
 
     def get_result
-      last_10_lines = `tail -n 10 "#{Rails.root}/log/web_sandbox_console.log" | grep #{self.uuid}`
+      last_10_lines = `tail -n 10 #{WebSandboxConsole.log_path} | grep #{self.uuid}`
       
       last_10_lines.split("\n").map do |line|
-        line.split("#{self.uuid}:").last
-      end.join("\r\n")
+        line.split("#{self.uuid}:").last.split("|||")
+      end.flatten
     end
   end
 end

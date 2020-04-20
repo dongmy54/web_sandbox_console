@@ -6,7 +6,7 @@ module WebSandboxConsole
     end
 
     def eval_code
-      @result = Sandbox.new(params[:code]).evalotor
+      @results = Sandbox.new(params[:code]).evalotor
     end
   end
 end
