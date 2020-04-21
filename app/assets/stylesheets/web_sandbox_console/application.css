@@ -13,3 +13,53 @@
  *= require_tree .
  *= require_self
  */
+
+.container{
+  margin: 20px 15px;
+}
+
+.output-content{
+    height: 600px;
+    font-size: 14px;
+    background-color: #272822;
+    color: #F8F8F2;
+    overflow: auto;
+    line-height: 12px;
+    padding-left: 10px;
+    margin-top: 20px;
+  }
+
+  .text_area_box{
+    font-size: 15px;
+    height: 150px;
+    width: 500px;
+    border-width: 2px;
+  }
+
+  .clear-button{
+    background: red;
+    height: 30px;
+    width: 100px;
+    font-size: 15px;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+
+  .send-button{
+    background: #272822;
+    height: 30px;
+    width: 150px;
+    font-size: 15px;
+    color: white;
+    cursor: pointer;
+  }
+
+  .reset-button{
+    background: red;
+    color: white;
+    height: 30px;
+    font-size: 15px;
+    color: 15px;
+    cursor: pointer;
+  }

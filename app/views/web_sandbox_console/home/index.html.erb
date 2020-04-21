@@ -1,9 +1,15 @@
-控制台 index 
-<%= form_tag(web_sandbox_console.eval_code_path, remote: true)  do %>
-  <%= text_area_tag :code, '', cols: 40, rows: 10 %>
-  <%= submit_tag '提交' %>
-<% end %>
-<%= button_tag '清除', type: 'button', onclick: "$('.output_content').empty();" %>
+控制台 index
 
-<div class="output_content">
+<div class="console">
+  <%= form_tag(web_sandbox_console.eval_code_path, remote: true, class: 'form')  do %>
+    <%= text_area_tag :code, '', class: 'text_area_box'%>
+    <%= button_tag '重置', class: 'reset-button' %>
+    <%= submit_tag '提交', data: { disable_with: "已发送，处理中..." }, class: 'send-button' %>
+  <% end %>
+
+</div>
+
+<%= button_tag '清除输出', type: 'button', onclick: "$('.output-content').empty();", class: 'clear-button' %>
+
+<div class="output-content">
 </div>
