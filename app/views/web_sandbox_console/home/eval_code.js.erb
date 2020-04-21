@@ -1,3 +1,4 @@
+$(".output-content").append('<p>============ 本次输出如下（仅代表最后行输出）===============</p>');
 <% @results.each do |result| %>
   $(".output-content").append('<p><%= escape_javascript result %></p>');
 <% end %>
