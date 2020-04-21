@@ -1,6 +1,9 @@
 # web_sandbox_console 配置文件 
 # 以下配置 都是可选的 缺少的情况下用默认值 或者 不生效
 WebSandboxConsole.setup do |config|
+  # 配置 引擎挂载位置
+  # config.mount_engine_route_path = '/web_sandbox_console'
+
   # 配置 ip 白名单
   # config.ip_whitelist = %w(192.168.23.12 192.145.2.0/24)
 

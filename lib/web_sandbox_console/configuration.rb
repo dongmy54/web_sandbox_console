@@ -11,10 +11,14 @@ module WebSandboxConsole
   mattr_accessor :instance_method_blacklist
   # 日志路径
   mattr_accessor :console_log_path
+  # 挂载 引擎路由位置
+  mattr_accessor :mount_engine_route_path
 
   # 默认设置
   @@http_basic_auth = {name: 'dmy', password: '123456'}
-
+  # 默认 引擎路由位置
+  @@mount_engine_route_path = '/web_sandbox_console'
+ 
   # 内置 实例方法 黑名单
   INSTANT_METOD_BUILT_IN_BLACKLIST = {
     Kernel: %i(system exec `),

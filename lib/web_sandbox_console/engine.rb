@@ -3,3 +3,4 @@ module WebSandboxConsole
     isolate_namespace WebSandboxConsole
   end
 end
+
