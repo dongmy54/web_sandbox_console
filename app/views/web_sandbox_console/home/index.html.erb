@@ -3,7 +3,7 @@
 <div class="console">
   <%= form_tag(web_sandbox_console.eval_code_path, remote: true, class: 'form')  do %>
     <%= text_area_tag :code, '', class: 'text_area_box'%>
-    <%= button_tag '重置', class: 'reset-button' %>
+    <input type="reset" value="重置" class='reset-button'>
     <%= submit_tag '提交', data: { disable_with: "已发送，处理中..." }, class: 'send-button' %>
   <% end %>
 

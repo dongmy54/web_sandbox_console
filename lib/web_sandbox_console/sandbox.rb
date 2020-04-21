@@ -4,12 +4,12 @@ module WebSandboxConsole
     attr_accessor :uuid
 
     def initialize(code = nil)
-      @code   = code
+      @code   = escape_single_quote_mark(code)
       @uuid   = SecureRandom.uuid
     end
 
     def evalotor
-      system("bundle exec rails runner '#{runner_code}'")
+      `bundle exec rails runner '#{runner_code}'`
       get_result
     end
 
@@ -19,7 +19,7 @@ module WebSandboxConsole
         result = nil
         begin
           ActiveRecord::Base.transaction(requires_new: true) do
-            result = #{self.code}
+            result = (#{self.code})
             raise ActiveRecord::Rollback
           end
         rescue Exception => e
@@ -35,6 +35,11 @@ module WebSandboxConsole
       last_10_lines.split("\n").map do |line|
         line.split("#{self.uuid}:").last.split("|||")
       end.flatten
+    end
+
+    # 转义单引号
+    def escape_single_quote_mark(code)
+      code.gsub(/'/,'"')
     end
   end
 end
