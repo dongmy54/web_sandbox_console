@@ -19,10 +19,12 @@ module WebSandboxConsole
         result = nil
         begin
           ActiveRecord::Base.transaction(requires_new: true) do
-            result = (#{self.code})
+            result = eval(#{self.code.inspect})
             raise ActiveRecord::Rollback
           end
         rescue Exception => e
+          WebSandboxConsole.log_p(e, "#{self.uuid}")
+        rescue SyntaxError => e
           WebSandboxConsole.log_p(e, "#{self.uuid}")
         end
         WebSandboxConsole.log_p(result, "#{self.uuid}")

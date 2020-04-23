@@ -14,8 +14,6 @@ module WebSandboxConsole
   # 挂载 引擎路由位置
   mattr_accessor :mount_engine_route_path
 
-  # 默认设置
-  @@http_basic_auth = {name: 'dmy', password: '123456'}
   # 默认 引擎路由位置
   @@mount_engine_route_path = '/web_sandbox_console'
  
@@ -23,18 +21,28 @@ module WebSandboxConsole
   INSTANT_METOD_BUILT_IN_BLACKLIST = {
     Kernel: %i(system exec `),
     File: %i(chmod chown)
-  }.freeze
+  }
 
   # 内置 类方法 黑名单
   CLASS_METHOD_BUILT_IN_BLACKLIST = {
     Kernel: %i(system exec `),
     File: %i(chmod chown new open delete read write),
     Dir: %i(new delete mkdir)
-  }.freeze
+  }
 
   
   def self.setup
     yield self
+    indifferent_access_deal(%w(http_basic_auth))
+  end
+
+  # 无差别hash 处理
+  def self.indifferent_access_deal(mattr_arr)
+    mattr_arr.each do |mattr|
+      current_hash = send(mattr)
+      next unless current_hash.is_a?(Hash)
+      send("#{mattr}=", current_hash.with_indifferent_access)
+    end
   end
 
 end
