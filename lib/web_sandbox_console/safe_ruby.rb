@@ -35,7 +35,7 @@ module WebSandboxConsole
       blacklist.each do |klass, methods|
         klass = Object.const_get(klass)
         methods.each do |method|
-          next if klass.instance_methods.exclude?(method)
+          next if (klass != Kernel) && klass.instance_methods.exclude?(method)
           klass.send(:undef_method, method)
         end
       end
