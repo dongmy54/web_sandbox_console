@@ -52,13 +52,13 @@ module WebSandboxConsole
     # 将两个hash 内部数组也同时合并，并去重
     def merge_method_hash(hash1, hash2)
       # 格式统一
-      hash2.transform_keys!(&:to_sym).transform_values!{|val_arr| val_arr.map{|val| val.to_sym}}
+      hash2.transform_keys!(&:to_sym).transform_keys!(&:to_sym).transform_values!{|i| i.map(&:to_sym)}
       # 共有的key 
       common_keys = hash2.keys & hash1.keys
       # hash2 特有keys
       hash2_special_keys = hash2.keys - hash1.keys
       # 特有keys 直接合到 hash1
-      hash1.merge!(hash2.slice(hash2_special_keys))
+      hash1.merge!(hash2.slice(*hash2_special_keys))
       # 共用keys 数组去重
       common_keys.each do |key|
         hash1[key] = (hash1[key] | hash2[key]).uniq

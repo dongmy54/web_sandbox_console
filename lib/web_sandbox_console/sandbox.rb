@@ -1,16 +1,24 @@
 module WebSandboxConsole
   class Sandbox
-    attr_accessor :code
-    attr_accessor :uuid
+    attr_accessor :code           # 代码
+    attr_accessor :uuid           # 唯一标识
+    attr_accessor :exe_tmp_file   # 执行临时文件（由code 组成的运行代码）
 
     def initialize(code = nil)
-      @code   = escape_single_quote_mark(code)
-      @uuid   = SecureRandom.uuid
+      @code         = code
+      @uuid         = SecureRandom.uuid
+      @exe_tmp_file = "#{Rails.root}/tmp/sandbox/#{uuid}.rb"
     end
 
     def evalotor
-      `bundle exec rails runner '#{runner_code}'`
-      get_result
+      begin
+        check_syntax
+        write_exe_tmp_file
+        exec_rails_runner
+        get_result
+      rescue SandboxError => e
+        [e.message]
+      end
     end
 
     def runner_code
@@ -30,7 +38,54 @@ module WebSandboxConsole
         WebSandboxConsole.log_p(result, "#{self.uuid}")
       CODE
     end
+    
+    # 临时文件目录
+    def tmp_file_dir
+      File.dirname(self.exe_tmp_file)
+    end
 
+    # 添加临时文件目录
+    def add_tmp_file_dir
+      FileUtils.mkdir_p(tmp_file_dir)  unless File.directory?(tmp_file_dir)
+    end
+
+    # 临时文件 需要清理？
+    def tmp_file_need_clean?
+      Dir["#{tmp_file_dir}/*"].count > 6
+    end
+
+    # 自动删除临时文件
+    def auto_clean_tmp_file
+      FileUtils.rm_rf(Dir["#{tmp_file_dir}/*"]) if tmp_file_need_clean?
+    end
+
+    # 写入 执行临时文件
+    def write_exe_tmp_file
+      add_tmp_file_dir
+      auto_clean_tmp_file
+      File.open(self.exe_tmp_file, 'w'){|f| f << runner_code}
+    end
+
+    # 准备检查语法
+    def prepare_check_syntax
+      add_tmp_file_dir
+      File.open(self.exe_tmp_file, 'w'){|f| f << self.code}
+    end
+
+    # 检查 语法
+    def check_syntax
+      prepare_check_syntax
+      unless `ruby -c #{self.exe_tmp_file}`.include?('Syntax OK')
+        raise SandboxError, "存在语法错误"
+      end
+    end
+
+    # 运行rails runner
+    def exec_rails_runner
+      `bundle exec rails runner #{self.exe_tmp_file}`
+    end
+
+    # 获取 执行结果
     def get_result
       last_10_lines = `tail -n 10 #{WebSandboxConsole.log_path} | grep #{self.uuid}`
       
@@ -39,9 +94,5 @@ module WebSandboxConsole
       end.flatten
     end
 
-    # 转义单引号
-    def escape_single_quote_mark(code)
-      code.gsub(/'/,'"')
-    end
   end
 end
