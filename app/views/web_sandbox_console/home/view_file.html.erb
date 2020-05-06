@@ -1,0 +1,25 @@
+# view_file
+<%= link_to '控制台', web_sandbox_console.root_path %>
+<div class="view_file">
+  <%= form_tag do_view_file_path, method: :post, remote: true do %>
+    <table>
+      <tr>
+        <td>文件/目录路径</td>
+        <td>
+          <%= text_field_tag :file_or_dir, nil, class: 'file_or_dir', placeholder: '请输入文件路径...'%>
+        </td>
+        <td>起始行数</td>
+        <td><%= text_field_tag :start_line_num, nil, class: 'h30', placeholder: '默认从第1行开始...' %></td>
+        <td>结束行数</td>
+        <td><%= text_field_tag :end_line_num, nil, class: 'h30', placeholder: '默认从第100行结束...' %></td>
+        <td><%= submit_tag '提交', data: { disable_with: "已发送，处理中..." }, class: 'view-file-button' %></td>
+    </table>
+  <% end %>
+</div>
+
+<div class="output-content">
+</div>
+
+<style type="text/css">
+  
+</style>

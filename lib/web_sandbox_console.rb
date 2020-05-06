@@ -5,6 +5,8 @@ require "web_sandbox_console/configuration"
 require "web_sandbox_console/common.rb"
 require "web_sandbox_console/safe_ruby"
 require "web_sandbox_console/sandbox"
+require "web_sandbox_console/view_file_error"
+require "web_sandbox_console/view_file"
 
 
 module WebSandboxConsole

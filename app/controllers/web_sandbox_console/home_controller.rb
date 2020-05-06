@@ -8,8 +8,17 @@ module WebSandboxConsole
     def index
     end
 
+    # 执行代码
     def eval_code
       @results = Sandbox.new(params[:code]).evalotor
+    end
+
+    def view_file
+    end
+
+    # 查看文件
+    def do_view_file
+      @results = ViewFile.new(params).view
     end
   end
 end

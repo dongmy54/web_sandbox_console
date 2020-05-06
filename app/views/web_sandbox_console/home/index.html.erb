@@ -1,4 +1,5 @@
 控制台 index
+<%= link_to '查看文件', web_sandbox_console.view_file_path %>
 
 <div class="console">
   <%= form_tag(web_sandbox_console.eval_code_path, remote: true, class: 'form')  do %>
@@ -6,7 +7,7 @@
     <input type="reset" value="重置" class='reset-button'>
     <%= submit_tag '提交', data: { disable_with: "已发送，处理中..." }, class: 'send-button' %>
   <% end %>
-
+  
 </div>
 
 <%= button_tag '清除输出', type: 'button', onclick: "$('.output-content').empty();", class: 'clear-button' %>
