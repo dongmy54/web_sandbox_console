@@ -14,6 +14,7 @@ module WebSandboxConsole
       begin
         check_param
         file_or_dir_exists
+        check_blacklist
         view_file
       rescue ViewFileError => e
         [e.message]
@@ -23,6 +24,11 @@ module WebSandboxConsole
     # 检查参数
     def check_param
       raise ViewFileError, '文件或目录参数不能为空' if file_or_dir.blank?
+    end
+
+    # 转换成项目路径
+    def project_path(path)
+      "#{Rails.root}/#{path}"
     end
 
     # 绝对路径
@@ -38,6 +44,34 @@ module WebSandboxConsole
     # 是目录？
     def is_directory?(path)
       File.directory?(path)
+    end
+
+    # 目录下所有子文件 目录
+    def dir_all_sub_file_or_dir(current_dir)
+      Dir["#{current_dir}**/*"]
+    end
+
+    # 黑名单 包含自身 及其 子目录/文件
+    def blacklist_all_file_dir_arr
+      black_lists = WebSandboxConsole.view_file_blacklist
+      return [] if black_lists.blank?
+
+      result_arr = black_lists.inject([]) do |result_arr, black_item_path|
+        current_path = project_path(black_item_path)
+
+        if is_directory?(current_path)
+          result_arr.concat(dir_all_sub_file_or_dir(current_path))
+        else
+          result_arr
+        end
+      end
+      black_lists.map{|i| project_path(i)}.concat(result_arr)
+    end
+    
+    # 检查是否为黑名单 文件 / 目录
+    def check_blacklist
+      black_lists = blacklist_all_file_dir_arr
+      raise ViewFileError, '文件或目录无权限查看' if black_lists.include?(file_or_dir_path) || black_lists.include?(file_or_dir_path + '/')
     end
 
     # 目录下文件
@@ -70,7 +104,7 @@ module WebSandboxConsole
 
     # 按指定行返回
     def special_line_content
-      File.readlines(file_or_dir_path)[start_line_num..end_line_num]
+      File.readlines(file_or_dir_path)[(start_line_num - 1)..(end_line_num - 1)]
     end
 
     # 添加行号

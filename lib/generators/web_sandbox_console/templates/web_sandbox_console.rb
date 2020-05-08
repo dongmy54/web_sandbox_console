@@ -16,6 +16,10 @@ WebSandboxConsole.setup do |config|
   # # 配置 黑名单 实例方法
   # config.instance_method_blacklist = {Kernel: %i(system exec `),File: %i(chmod chown)}
 
+  # 文件黑名单列表 （如果是目录 则目录下所有文件都不用）目录以 / 结尾
+  # 默认都是项目路径下的
+  # config.view_file_blacklist = %w(config/secrets.yml vendor/)
+
   # # 配置 日志路径 默认路径位于项目下
   # config.console_log_path = "log/web_sandbox_console.log"
 end

@@ -9,6 +9,8 @@ module WebSandboxConsole
   mattr_accessor :class_method_blacklist
   # 实例方法 黑名单 hash
   mattr_accessor :instance_method_blacklist
+  # 文件列表 黑名单
+  mattr_accessor :view_file_blacklist
   # 日志路径
   mattr_accessor :console_log_path
   # 挂载 引擎路由位置
