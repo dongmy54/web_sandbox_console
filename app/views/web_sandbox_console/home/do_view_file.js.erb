@@ -1,5 +1,5 @@
 $(".output-content").empty();
 $(".output-content").append('<p>============ 查找结果如下 ===============</p>');
 <% @results.each do |result| %>
-  $(".output-content").append('<p><%= escape_javascript result %></p>');
+  $(".output-content").append('<pre><%= escape_javascript result %></pre>');
 <% end %>
