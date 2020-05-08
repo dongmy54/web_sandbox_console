@@ -50,11 +50,22 @@ WebSandboxConsole.setup do |config|
   # # 配置 黑名单 实例方法
   # config.instance_method_blacklist = {Kernel: %i(system exec `),File: %i(chmod chown)}
 
+  # 文件黑名单列表 （如果是目录 则目录下所有文件都不用）目录以 / 结尾
+  # 默认都是项目路径下的
+  # config.view_file_blacklist = %w(config/secrets.yml vendor/)
+
   # # 配置 日志路径 默认路径位于项目下
   # config.console_log_path = "log/web_sandbox_console.log"
 end
 ```
 
+## other
+查看目录或文件路径： `/web_sandbox_console/view_file`
+除了可以查询一些数据外，还可以查看项目路径下任何文件或目录，如果你输入的是一个目录，那么会查出此目录下的文件/目录；如果你输入的是文件，那么将查出文件的内容，默认查看文件的第一行 到 100行，当然你也可以指定你需要查找的行；
+
+如果一个文件特别大，超过10M,此时将查找文件的最后200行，指定行数将无效;当然也可在配置文件中，配置哪些文件不可查看，哪些目录不可以查看，如果指定的是目录，那么目录下的所有子文件或目录都无权查看.
+
+![Snip20200508_1.png](https://i.loli.net/2020/05/08/3N8Q7pnzroq9Byw.png)
 ## Contributing
 Contribution directions go here.
 
