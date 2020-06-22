@@ -82,16 +82,27 @@ module WebSandboxConsole
 
     # 运行rails runner
     def exec_rails_runner
-      `bundle exec rails runner #{self.exe_tmp_file}`
+      @stdout = `bundle exec rails runner #{self.exe_tmp_file}`
     end
 
-    # 获取 执行结果
-    def get_result
+    # 返回结果
+    def return_result_arr
       last_10_lines = `tail -n 10 #{WebSandboxConsole.log_path} | grep #{self.uuid}`
       
       last_10_lines.split("\n").map do |line|
         line.split("#{self.uuid}:").last.split("|||")
       end.flatten
+    end
+
+    # 最终结果
+    def get_result
+      if @stdout.present?
+        stdout_arr = @stdout.to_s.split("\n")
+        stdout_arr << '------------ 返回值 ----------'
+        stdout_arr.concat(return_result_arr)
+      else
+        return_result_arr
+      end
     end
 
   end
