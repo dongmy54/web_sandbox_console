@@ -35,9 +35,10 @@
 
   .text_area_box{
     font-size: 15px;
-    height: 200px;
+    height: 250px;
     width: 1000px;
     border-width: 2px;
+    overflow: auto;
   }
 
   .clear-button{
