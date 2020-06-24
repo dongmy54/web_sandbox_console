@@ -20,6 +20,9 @@ WebSandboxConsole.setup do |config|
   # 默认都是项目路径下的
   # config.view_file_blacklist = %w(config/secrets.yml vendor/)
 
+  # 通过非对称加密方式 升级权限，授权通过后，可获得执行数据权限（PS: 数据操作不再回滚）
+  # config.public_key = "-----BEGIN PUBLIC KEY-----\nMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDMbJOE1vQT1jFpaH1GPYzdRJN/\nLh8VePmzXs5BYOLHB0xIjArL1NlXMbCJ+AS2rv3/oHIOdHhEuZw0tmm9DhG100R8\nRjBpsEKCDI88jl9qRkFmD3CVk8XQXv6c2IkRZCYSTvgDkmnKAlORksfw+p0cR2AQ\nlAtAsNsNviKYBzXKfQIDAQAB\n-----END PUBLIC KEY-----\n"
+
   # # 配置 日志路径 默认路径位于项目下
   # config.console_log_path = "log/web_sandbox_console.log"
 end

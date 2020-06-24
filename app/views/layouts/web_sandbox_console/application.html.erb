@@ -12,3 +12,10 @@
   </div>
 </body>
 </html>
+
+<script type="text/javascript">
+  <% flash.each do |type, msg| %>
+    <% tip = type == 'notice' ? '提示' : '其它' %>
+    alert("<%= tip %>: <%= msg %>");
+  <% end %>
+</script>

@@ -10,7 +10,7 @@ module WebSandboxConsole
 
     # 执行代码
     def eval_code
-      @results = Sandbox.new(params[:code]).evalotor
+      @results = Sandbox.new(params[:code], session[:pass_auth]).evalotor
     end
 
     def view_file

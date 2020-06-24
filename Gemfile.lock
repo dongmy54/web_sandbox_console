@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    web_sandbox_console (0.1.0)
+    web_sandbox_console (0.2.0)
       jquery-rails
       rails
 
@@ -66,7 +66,7 @@ GEM
     method_source (1.0.0)
     mini_mime (1.0.2)
     mini_portile2 (2.4.0)
-    minitest (5.14.0)
+    minitest (5.14.1)
     nio4r (2.5.2)
     nokogiri (1.10.7)
       mini_portile2 (~> 2.4.0)

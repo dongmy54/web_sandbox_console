@@ -15,6 +15,8 @@ module WebSandboxConsole
   mattr_accessor :console_log_path
   # 挂载 引擎路由位置
   mattr_accessor :mount_engine_route_path
+  # 公钥
+  mattr_accessor :public_key
 
   # 默认 引擎路由位置
   @@mount_engine_route_path = '/web_sandbox_console'

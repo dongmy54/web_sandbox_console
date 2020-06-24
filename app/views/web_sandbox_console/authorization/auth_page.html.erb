@@ -1,0 +1,35 @@
+# 授权
+
+<p>
+  <%= link_to '获取令牌', web_sandbox_console.fetch_token_path(:format => "js"), remote: true %> 
+  <span> PS: 注意获取令牌一天最多20次</span>
+</p>
+
+
+<h2>授权申请</h1>
+<div class="">
+  <%= form_tag web_sandbox_console.auth_path, method: :post do %>
+    <table>
+      <tr>
+        <td>加密密文</td>
+        <td>
+          <%= text_area_tag :secret_text, '', style: "width: 300px;height: 100px;" %>
+        </td>
+        <td><%= submit_tag '提交', data: { disable_with: "已发送，处理中..." }, class: 'view-file-button' %></td>
+    </table>
+  <% end %>
+</div>
+
+<h4>说明令牌使用说明：</h4>
+<div>
+  <pre>
+    require 'openssl'
+    require 'base64'
+
+    private_key = "你的私钥"
+    p_key = OpenSSL::PKey::RSA.new private_key
+    secret_text = p_key.private_encrypt("你的令牌")
+    encode_text = Base64.encode64(secret_text)
+    puts encode_text
+  </pre>
+</div>

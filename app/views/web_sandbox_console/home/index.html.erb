@@ -1,5 +1,11 @@
 控制台 index
 <%= link_to '查看文件', web_sandbox_console.view_file_path %>
+<% if session[:pass_auth] %>
+  <span style="color: red;">授权成功(当前修改将写入数据库)</span>
+<% else %>
+  <%= link_to '升级授权', web_sandbox_console.view_file_path %>
+<% end %>
+
 
 <div class="console">
   <%= form_tag(web_sandbox_console.eval_code_path, remote: true, class: 'form')  do %>

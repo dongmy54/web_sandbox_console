@@ -2,11 +2,13 @@ module WebSandboxConsole
   class Sandbox
     attr_accessor :code           # 代码
     attr_accessor :uuid           # 唯一标识
+    attr_accessor :pass_auth      # 是否通过授权
     attr_accessor :exe_tmp_file   # 执行临时文件（由code 组成的运行代码）
 
-    def initialize(code = nil)
+    def initialize(code = nil, pass_auth = false)
       @code         = code
       @uuid         = SecureRandom.uuid
+      @pass_auth    = pass_auth.presence || false
       @exe_tmp_file = "#{Rails.root}/tmp/sandbox/#{uuid}.rb"
     end
 
@@ -28,7 +30,7 @@ module WebSandboxConsole
         begin
           ActiveRecord::Base.transaction(requires_new: true) do
             result = eval(#{self.code.inspect})
-            raise ActiveRecord::Rollback
+            raise ActiveRecord::Rollback  unless #{self.pass_auth}
           end
         rescue Exception => e
           WebSandboxConsole.log_p(e, "#{self.uuid}")
