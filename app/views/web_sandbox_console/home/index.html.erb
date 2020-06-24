@@ -3,7 +3,7 @@
 <% if session[:pass_auth] %>
   <span style="color: red;">授权成功(当前修改将写入数据库)</span>
 <% else %>
-  <%= link_to '升级授权', web_sandbox_console.view_file_path %>
+  <%= link_to '升级授权', web_sandbox_console.auth_page_path %>
 <% end %>
 
 
