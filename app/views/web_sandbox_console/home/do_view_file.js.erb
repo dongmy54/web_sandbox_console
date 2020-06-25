@@ -1,5 +1,7 @@
 $(".output-content").empty();
-$(".output-content").append('<p>============ 查找结果如下 ===============</p>');
-<% @results.each do |result| %>
+<% line_num_show = @total_line_num ? "原始文件总行数：#{@total_line_num}" : "" %>
+
+$(".output-content").append("<p>============ <%= Time.current %> 查找结果如下 <%= line_num_show %> ===============</p>");
+<% @lines.each do |result| %>
   $(".output-content").append('<pre><%= escape_javascript result %></pre>');
 <% end %>

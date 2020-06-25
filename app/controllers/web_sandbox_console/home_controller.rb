@@ -18,7 +18,9 @@ module WebSandboxConsole
 
     # 查看文件
     def do_view_file
-      @results = ViewFile.new(params).view
+      results         = ViewFile.new(params).view
+      @lines          = results[:lines]
+      @total_line_num = results[:total_line_num]
     end
   end
 end

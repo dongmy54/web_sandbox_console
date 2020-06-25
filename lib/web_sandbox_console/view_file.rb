@@ -24,7 +24,7 @@ module WebSandboxConsole
         check_only_view_log
         view_file
       rescue ViewFileError => e
-        [e.message]
+        {lines: [e.message]}
       end
     end
 
@@ -90,10 +90,11 @@ module WebSandboxConsole
 
     # 目录下文件
     def files_in_dir
-      Dir["#{file_or_dir_path}/*"].map do |path|
+      lines = Dir["#{file_or_dir_path}/*"].map do |path|
         path += is_directory?(path) ? '(目录)' : '(文件）'
         path[file_or_dir_path.length..-1]
       end
+      {lines: lines}
     end
 
     # 是否为大文件
@@ -118,8 +119,14 @@ module WebSandboxConsole
         else
           special_line_content
         end
-        add_line_num(lines)
+        
+        {lines: add_line_num(lines), total_line_num: cal_file_total_line_num}
       end
+    end
+
+    # 计算文件总行数
+    def cal_file_total_line_num
+      `wc -l < #{file_or_dir_path}`.to_i
     end
 
     # 最后 xx 行内容

@@ -18,6 +18,11 @@
   line-height: 18px;
  }
 
+.tip {
+  color: red;
+  font-size: 12px;
+}
+
 .container{
   margin: 20px 15px;
 }
