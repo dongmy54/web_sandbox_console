@@ -10,7 +10,13 @@ module WebSandboxConsole
 
     # 执行代码
     def eval_code
-      @results = Sandbox.new(params[:code], session[:pass_auth]).evalotor
+      sandbox = Sandbox.new(params[:code], session[:pass_auth])
+
+      @results = if params[:commit] == '异步执行'
+        sandbox.asyn_evalotor
+      else
+        sandbox.evalotor
+      end
     end
 
     def view_file

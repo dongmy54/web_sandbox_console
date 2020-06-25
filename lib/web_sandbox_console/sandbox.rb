@@ -12,14 +12,32 @@ module WebSandboxConsole
       @exe_tmp_file = "#{Rails.root}/tmp/sandbox/#{uuid}.rb"
     end
 
+    # 同步执行
     def evalotor
+      evalotor_block do
+        exec_rails_runner
+        get_result
+      end
+    end
+
+    # 异步后台执行
+    def asyn_evalotor
+      evalotor_block do
+        Thread.new {exec_rails_runner}
+        ["已在后台执行，请耐心等待😊"]
+      end
+    end
+    
+    # 执行结构块
+    def evalotor_block
       begin
         check_syntax
         write_exe_tmp_file
-        exec_rails_runner
-        get_result
+        yield
       rescue SandboxError => e
         [e.message]
+      rescue Exception => e
+        ["发生未知错误: #{e.inspect};#{e.backtrace[0..2].join('\r\n')}"]
       end
     end
 

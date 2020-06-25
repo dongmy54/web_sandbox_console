@@ -23,6 +23,42 @@
   font-size: 12px;
 }
 
+.fr {
+  float: right;
+}
+
+.fl {
+  float: left;
+}
+
+.h250{
+  height: 250px;
+}
+
+.margin-t-10{
+  margin-top: 10px;
+}
+
+.margin-t-145{
+  margin-top: 145px;
+}
+
+.margin-b-20{
+  margin-bottom: 20px;
+}
+
+.text_area_div {
+  height: 250px;
+  width: 88%;
+  display: inline-block;
+}
+
+.submit_div {
+  height: 250px;
+  width: 9%;
+  display: inline-block;
+}
+
 .container{
   margin: 20px 15px;
 }
@@ -40,8 +76,8 @@
 
   .text_area_box{
     font-size: 15px;
-    height: 250px;
-    width: 1000px;
+    height: 100%;
+    width: 95%;
     border-width: 2px;
     overflow: auto;
   }
