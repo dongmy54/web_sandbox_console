@@ -3,11 +3,17 @@ module WebSandboxConsole
     attr_accessor :file_or_dir     # 文件或目录
     attr_accessor :start_line_num  # 起始行数
     attr_accessor :end_line_num     # 结束行数
+    attr_accessor :sed_start_time   # 开始时间
+    attr_accessor :sed_end_time     # 结束时间
+    attr_accessor :grep_content     # 过滤内容
 
     def initialize(opts = {})
       @file_or_dir     = opts[:file_or_dir]
-      @start_line_num  = opts[:start_line_num].present? ? opts[:start_line_num].to_i : 1
-      @end_line_num    = opts[:end_line_num].present? ? opts[:end_line_num].to_i : 100
+      @start_line_num  = (opts[:start_line_num].presence || 1).to_i
+      @end_line_num    = (opts[:end_line_num].presence || 100).to_i
+      @sed_start_time  = parse_time(opts[:sed_start_time])
+      @sed_end_time    = parse_time(opts[:sed_end_time])
+      @grep_content    = opts[:grep_content]
     end
 
     def view
@@ -95,19 +101,30 @@ module WebSandboxConsole
       File.new(file_or_dir_path).size > 10.megabytes
     end
 
+    # 是否需要过滤
+    def need_grep?
+      @sed_start_time || @grep_content.present?
+    end
+
     # 查看文件/目录
     def view_file
       if is_directory?(file_or_dir_path)
         files_in_dir
-      else
-        lines = is_big_file? ? tail_200_line : special_line_content
+      else # 文件
+        lines = if need_grep?
+          grep_file_content
+        elsif is_big_file?
+          tail_any_line(1000)
+        else
+          special_line_content
+        end
         add_line_num(lines)
       end
     end
 
-    # 最后 200 行内容
-    def tail_200_line
-      (`tail -n 200 #{file_or_dir_path}`).split(/[\r,\r\n]/)
+    # 最后 xx 行内容
+    def tail_any_line(num)
+      (`tail -n #{num} #{file_or_dir_path}`).split(/[\r,\r\n]/)
     end
 
     # 按指定行返回
@@ -115,11 +132,31 @@ module WebSandboxConsole
       File.readlines(file_or_dir_path)[(start_line_num - 1)..(end_line_num - 1)]
     end
 
+    # 过滤文件
+    def grep_file_content
+      content = if @sed_start_time && @grep_content.present?
+        `sed -n '/#{@sed_start_time}/,/#{@sed_end_time}/p' #{file_or_dir_path} | grep #{@grep_content}`
+      elsif @sed_start_time
+        `sed -n '/#{@sed_start_time}/,/#{@sed_end_time}/p' #{file_or_dir_path}`
+      else
+        `grep #{@grep_content} #{file_or_dir_path}`
+      end
+      
+      content.split(/[\r,\r\n]/)
+    end
+
     # 添加行号
     def add_line_num(lines)
       start_num = is_big_file? ? 1 : start_line_num
       lines.each_with_index.map{|line, index| "#{index + start_num}:  #{line}"}
     end
+
+    private
+      # 解析时间
+      def parse_time(str)
+        DateTime.parse(str).strftime("%FT%T") rescue nil
+      end
+
 
   end
 end

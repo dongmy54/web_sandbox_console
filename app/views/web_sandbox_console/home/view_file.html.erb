@@ -12,7 +12,20 @@
         <td><%= text_field_tag :start_line_num, nil, class: 'h30', placeholder: '默认从第1行开始...' %></td>
         <td>结束行数</td>
         <td><%= text_field_tag :end_line_num, nil, class: 'h30', placeholder: '默认从第100行结束...' %></td>
+      </tr>
+      <tr>
+        <td>过滤内容</td>
+        <td>
+          <%= text_field_tag :grep_content, nil, class: 'file_or_dir' %>
+        </td>
+        <td>过滤开始时间</td>
+        <td><%= text_field_tag :sed_start_time, nil, class: 'h30', placeholder: Time.current.strftime("%F %T") %></td>
+        
+        <td>过滤结束时间</td>
+        <td><%= text_field_tag :sed_end_time, nil, class: 'h30', placeholder: Time.current.strftime("%F %T") %></td>
         <td><%= submit_tag '提交', data: { disable_with: "已发送，处理中..." }, class: 'view-file-button' %></td>
+      </tr>
+        
     </table>
   <% end %>
 </div>
