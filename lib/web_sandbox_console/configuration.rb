@@ -11,6 +11,8 @@ module WebSandboxConsole
   mattr_accessor :instance_method_blacklist
   # 文件列表 黑名单
   mattr_accessor :view_file_blacklist
+  # 仅能查看日志文件
+  mattr_accessor :only_view_log_file
   # 日志路径
   mattr_accessor :console_log_path
   # 挂载 引擎路由位置
@@ -20,7 +22,8 @@ module WebSandboxConsole
 
   # 默认 引擎路由位置
   @@mount_engine_route_path = '/web_sandbox_console'
-
+  # 默认 开启仅可查看日志
+  @@only_view_log_file = true
  
   # 内置 实例方法 黑名单
   INSTANT_METOD_BUILT_IN_BLACKLIST = {

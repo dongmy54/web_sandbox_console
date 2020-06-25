@@ -15,6 +15,7 @@ module WebSandboxConsole
         check_param
         file_or_dir_exists
         check_blacklist
+        check_only_view_log
         view_file
       rescue ViewFileError => e
         [e.message]
@@ -72,6 +73,13 @@ module WebSandboxConsole
     def check_blacklist
       black_lists = blacklist_all_file_dir_arr
       raise ViewFileError, '文件或目录无权限查看' if black_lists.include?(file_or_dir_path) || black_lists.include?(file_or_dir_path + '/')
+    end
+
+    # 检查 仅能查看日志
+    def check_only_view_log
+      if WebSandboxConsole.only_view_log_file
+        raise ViewFileError, '仅可查看日志目录/文件' unless file_or_dir.split("/")[0] == 'log'
+      end
     end
 
     # 目录下文件
