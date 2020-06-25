@@ -18,17 +18,20 @@ gem 'web_sandbox_console'
 $ bundle
 ```
 
-此时，如果是在本地，你访问 `http://localhost:3000/web_sandbox_console` 就能看到web控制台了。
+此时，如果是在本地，你访问 `http://localhost:3000/web_sandbox_console` 就能看到web控制台了,下面这个样子。
+![Snip20200625_1.png](https://i.loli.net/2020/06/25/ZD5Ns2HzfME4Whx.png)
 
 ## 配置
-在bundle后 你就可以正常使用gem了，如果你需要配置的话，才用来看这步
+在bundle后,就可以使用一些基础的功能了；
+如果你不满足基础的功能、或者需要更高的安全性，很有必要仔细了解配置选项，总之还是很推荐对项目进行适当配置；
+关于配置的详细介绍，在生成的文件中也有详细的说明，参照说明配置即可；
 
 在 rails 项目路径下,执行：
 ```bash
 $ rails g web_sandbox_console
 ```
 
-这会在项目路径下,创建如下文件（文件中已详细说明用法）
+这会在项目路径下,创建如下文件（即配置文件）
 ```ruby
 # config/initializers/web_sandbox_console.rb
 
@@ -50,22 +53,70 @@ WebSandboxConsole.setup do |config|
   # # 配置 黑名单 实例方法
   # config.instance_method_blacklist = {Kernel: %i(system exec `),File: %i(chmod chown)}
 
-  # 文件黑名单列表 （如果是目录 则目录下所有文件都不用）目录以 / 结尾
+  # 文件黑名单列表 （如果是目录 则目录下所有文件都不可用）目录以 / 结尾
   # 默认都是项目路径下的
   # config.view_file_blacklist = %w(config/secrets.yml vendor/)
+
+  # 配置 文件权限，是否仅能查看log文件,默开启
+  #config.only_view_log_file = false
+
+  # 通过非对称加密方式 升级权限，授权通过后，可获得执行数据权限（PS: 数据操作不再回滚）
+  # config.public_key = "-----BEGIN PUBLIC KEY-----\nMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDMbJOE1vQT1jFpaH1GPYzdRJN/\nLh8VePmzXs5BYOLHB0xIjArL1NlXMbCJ+AS2rv3/oHIOdHhEuZw0tmm9DhG100R8\nRjBpsEKCDI88jl9qRkFmD3CVk8XQXv6c2IkRZCYSTvgDkmnKAlORksfw+p0cR2AQ\nlAtAsNsNviKYBzXKfQIDAQAB\n-----END PUBLIC KEY-----\n"
 
   # # 配置 日志路径 默认路径位于项目下
   # config.console_log_path = "log/web_sandbox_console.log"
 end
 ```
 
-## other
-查看目录或文件路径： `/web_sandbox_console/view_file`
-除了可以查询一些数据外，还可以查看项目路径下任何文件或目录，如果你输入的是一个目录，那么会查出此目录下的文件/目录；如果你输入的是文件，那么将查出文件的内容，默认查看文件的第一行 到 100行，当然你也可以指定你需要查找的行；
+## 深入了解
+主要包含两大功能快：代码执行、文件查看，下面分别介绍
 
-如果一个文件特别大，超过10M,此时将查找文件的最后200行，指定行数将无效;当然也可在配置文件中，配置哪些文件不可查看，哪些目录不可以查看，如果指定的是目录，那么目录下的所有子文件或目录都无权查看.
+### 代码执行
+1. 提交和异步执行
+提交后代码会立即执行；如果点击异步执行，则代码会在后台异步执行，这对于需要执行非常耗时的代码，强烈建议异步执行；
 
-![Snip20200508_1.png](https://i.loli.net/2020/05/08/3N8Q7pnzroq9Byw.png)
+2. 升级权限
+通常你能做的操作就是，查查数据等，数据的所有操作都不会写入到数据库，这样很安全；但是每当你需要修改数据时，还是需要让运维处理；为了满足可以数据写入、和安全性的要求；开发了升级权限这个功能。
+
+升级权限你需要在配置文件中配置公钥，自己保存私匙；整个过程采用非对称加密的方式，进行授权，还是比较安全的。
+升级授权成功后，代码执行将不再回滚，会直接写入数据库。
+
+升级权限流程如下：
+a. `config/initializers/web_sandbox_console.rb`配置公钥
+b. 进入授权页面，点击获取令牌 `web_sandbox_console/auth_page`
+![Snip20200625_2.png](https://i.loli.net/2020/06/25/GQXlpwLryjtVfdO.png)
+e. 用私钥对令牌加密，然后用base64加密
+f. 将加密的打印结果（注意是puts 文本）,输入加密密文框，提交
+
+```ruby
+# 本地生成 加密密文代码
+require 'openssl'
+require 'base64'
+
+private_key = "你的私钥"
+p_key = OpenSSL::PKey::RSA.new private_key
+secret_text = p_key.private_encrypt("你的令牌")
+encode_text = Base64.encode64(secret_text)
+puts encode_text
+```
+
+### 文件查看
+![Snip20200625_3.png](https://i.loli.net/2020/06/25/ZtaeGlUpc4fJFgW.png)
+1. 目录和文件
+你可以查看一个目录下有哪些文件夹或文件，你也可以直接查看文件的内容，默认返回一个文件的前100行
+
+2. 指定行数
+你可以根据文件总行数，指定查看文件的开始行数、结束行数。
+PS: a. 在过滤文件（过滤内容/过滤时间）的时候，此时指定行数将被忽略
+    b. 对于大文件（默认超过10M)，处于性能考虑，此时指定行数也会被忽略
+
+3. 过滤
+需要特别说明的是，过滤时间是针对日志文件写的，因此如果是非日志文件，将不会有任何效果。
+建议：出于性能考虑，过滤时候尽量缩小时间范围
+
+4. 权限
+默认情况，只能查看日志文件或目录，当然你也可以去配置做调整。
+
 ## Contributing
 Contribution directions go here.
 
