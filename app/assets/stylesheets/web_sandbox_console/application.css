@@ -39,8 +39,8 @@
   margin-top: 10px;
 }
 
-.margin-t-145{
-  margin-top: 145px;
+.margin-t-100{
+  margin-top: 100px;
 }
 
 .margin-b-20{
@@ -90,6 +90,7 @@
     color: white;
     cursor: pointer;
     border-radius: 5px;
+    border: red;
   }
 
   .send-button{
@@ -108,4 +109,15 @@
     font-size: 15px;
     color: 15px;
     cursor: pointer;
+    border: red;
   }
+
+  button,input{
+   outline:none;
+ }
+
+ button:focus,input:focus,textarea:focus {
+   outline: none;
+   border: 1px solid #272822;
+ }
+  

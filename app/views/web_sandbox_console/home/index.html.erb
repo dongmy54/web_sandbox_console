@@ -1,7 +1,6 @@
 控制台 index
 <%= link_to '查看文件', web_sandbox_console.view_file_path %>
 <% if session[:pass_auth] %>
-  <span style="color: red;">授权成功(当前修改将写入数据库)</span>
 <% else %>
   <%= link_to '升级授权', web_sandbox_console.auth_page_path %>
 <% end %>
@@ -14,9 +13,9 @@
     
     <div class="submit_div">
       <div class="fr">
-        <div class="margin-t-145"><input type="reset" value="重置" class='reset-button' %></div>
+        <div class="margin-t-100"><input type="reset" value="重置" class='reset-button' %></div>
 
-        <div class="margin-t-10"><%= submit_tag '提交', data: { disable_with: "已发送，处理中..." }, class: 'send-button' %></div>
+        <div class="margin-t-10"><span class="tip">授权成功(当前修改将写入数据库)</span><%= submit_tag '提交', data: { disable_with: "已发送，处理中..." }, class: 'send-button' %></div>
         <div class="margin-t-10"><%= submit_tag '异步执行', data: { disable_with: "已发送，处理中..." }, class: 'send-button' %></div>
       </div>
     </div>
