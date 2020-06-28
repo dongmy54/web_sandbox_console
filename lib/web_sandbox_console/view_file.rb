@@ -31,6 +31,7 @@ module WebSandboxConsole
     # 检查参数
     def check_param
       raise ViewFileError, '文件或目录参数不能为空' if file_or_dir.blank?
+      raise ViewFileError, "过滤内容中不能出现单引号" if grep_content.to_s.include?("'")
     end
 
     # 转换成项目路径
@@ -142,11 +143,11 @@ module WebSandboxConsole
     # 过滤文件
     def grep_file_content
       content = if @sed_start_time && @grep_content.present?
-        `sed -n '/#{@sed_start_time}/,/#{@sed_end_time}/p' #{file_or_dir_path} | grep #{@grep_content}`
+        `sed -n '/#{@sed_start_time}/,/#{@sed_end_time}/p' #{file_or_dir_path} | grep '#{@grep_content}'`
       elsif @sed_start_time
         `sed -n '/#{@sed_start_time}/,/#{@sed_end_time}/p' #{file_or_dir_path}`
       else
-        `grep #{@grep_content} #{file_or_dir_path}`
+        `grep '#{@grep_content}' #{file_or_dir_path}`
       end
       
       content.split(/[\r,\r\n]/)
