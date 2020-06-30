@@ -28,5 +28,14 @@ module WebSandboxConsole
       @lines          = results[:lines]
       @total_line_num = results[:total_line_num]
     end
+
+    # 下载文件
+    def download
+      return render text: "文件名不能为空" if params[:file_name].blank?
+      file_full_path = "#{Rails.root}/log/#{params[:file_name]}.#{request.url.split(".").last}"
+      return render text: '文件不存在，可能在其它服务器请多次尝试，或检查文件名(需要带扩展比如：a.log)' unless File.exists?(file_full_path)
+      send_file file_full_path
+    end
+
   end
 end
