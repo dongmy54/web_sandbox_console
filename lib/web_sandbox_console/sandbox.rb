@@ -46,10 +46,7 @@ module WebSandboxConsole
         WebSandboxConsole.init_safe_env
         result = nil
         begin
-          ActiveRecord::Base.transaction(requires_new: true) do
-            result = eval(#{self.code.inspect})
-            raise ActiveRecord::Rollback  unless #{self.pass_auth}
-          end
+          #{self.pass_auth ? no_rollback_code : rollback_code}
         rescue Exception => e
           WebSandboxConsole.log_p(e, "#{self.uuid}")
         rescue SyntaxError => e
@@ -57,6 +54,23 @@ module WebSandboxConsole
         end
         WebSandboxConsole.log_p(result, "#{self.uuid}")
       CODE
+    end
+
+    # 回滚code
+    def rollback_code
+      <<-EOF
+        ActiveRecord::Base.transaction(requires_new: true) do
+          result = eval(#{self.code.inspect})
+          raise ActiveRecord::Rollback
+        end
+      EOF
+    end
+
+    # 不回滚code
+    def no_rollback_code
+      <<-EOF
+        result = eval(#{self.code.inspect})
+      EOF
     end
     
     # 临时文件目录
