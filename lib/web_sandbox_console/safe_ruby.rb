@@ -5,6 +5,7 @@ module WebSandboxConsole
       sanitize_constants
       sanitize_instance_methods
       sanitize_class_methods
+      sanitize_csv
     end
 
     # 净化 类方法
@@ -64,6 +65,20 @@ module WebSandboxConsole
         hash1[key] = (hash1[key] | hash2[key]).uniq
       end
       hash1
+    end
+    
+    # 净化 csv
+    def sanitize_csv
+      require 'csv' unless defined? CSV
+      CSV.instance_eval do
+        alias :old_open :open
+        
+        def open(filename, mode="r", **options, &block)
+          # 无论输入什么路径 都只会在log下创建文件
+          filename = "#{Rails.root}/log/#{filename.split("/").last}" 
+          old_open(filename, mode, **options, &block)
+        end
+      end
     end
 
   end

@@ -132,7 +132,7 @@ PS: a. 在过滤文件（过滤内容/过滤时间）的时候，此时指定行
 ### 日志下载
 下载路径：web_sandbox_console/download/文件名；比如：http://localhost:3000/web_sandbox_console/download/log_p.log
 
-PS: 你可以利用此功能导出数据，首先在代码执行中，导出csv文件，这个文件路径放在log目录下，这样数据导入完成，你就可以像下载日志那样下载了。
+PS: 你可以利用此功能导出数据，首先在代码执行中，导出csv文件，这个文件会放在log目录下（出于安全考虑，即使你书写的文件路径不是log目录下，也会转换到log路径），你就可以像下载日志那样下载了。
 
 ## Contributing
 Contribution directions go here.
