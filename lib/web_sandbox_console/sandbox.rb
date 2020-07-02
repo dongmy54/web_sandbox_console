@@ -116,7 +116,7 @@ module WebSandboxConsole
 
     # 运行rails runner
     def exec_rails_runner
-      @stdout = `bundle exec rails runner #{self.exe_tmp_file}`
+      @stdout = `RAILS_ENV=#{Rails.env} bundle exec rails runner #{self.exe_tmp_file}`
     end
 
     # 返回结果
