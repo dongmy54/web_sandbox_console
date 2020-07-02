@@ -132,7 +132,7 @@ module WebSandboxConsole
 
     # 最后 xx 行内容
     def tail_any_line(num)
-      (`tail -n #{num} #{file_or_dir_path}`).split(/[\r,\r\n]/)
+      (`tail -n #{num} #{file_or_dir_path}`).split("\n")
     end
 
     # 按指定行返回
@@ -149,8 +149,7 @@ module WebSandboxConsole
       else
         `grep '#{@grep_content}' #{file_or_dir_path}`
       end
-      
-      content.split(/[\r,\r\n]/)
+      content.split("\n")
     end
 
     # 添加行号
