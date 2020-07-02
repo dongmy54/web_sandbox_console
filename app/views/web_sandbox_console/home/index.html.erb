@@ -3,6 +3,8 @@
 <% unless session[:pass_auth] %>
   <%= link_to '升级授权', web_sandbox_console.auth_page_path %>
 <% end %>
+<%= link_to '下载文件', web_sandbox_console.download_page_path %>
+
 
 <div class="console margin-b-20">
   <%= form_tag(web_sandbox_console.eval_code_path, remote: true, class: 'form')  do %>

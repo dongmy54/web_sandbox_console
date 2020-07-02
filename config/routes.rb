@@ -4,13 +4,14 @@ WebSandboxConsole::Engine.routes.draw do
   post :eval_code, to: "home#eval_code"
   get :view_file, to: "home#view_file"
   post :do_view_file, to: "home#do_view_file"
-  get "download/:file_name", to: "home#download" # 下载文件
 
   # 授权相关
   get :fetch_token, to: "authorization#fetch_token"
   get :auth_page, to: "authorization#auth_page"
   post :auth, to: "authorization#auth"
 
-
+  # 文件下载
+  get :download_page, to: "home#download_page"
+  get :download, to: "home#download"
 end
 

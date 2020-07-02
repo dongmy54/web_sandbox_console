@@ -1,0 +1,25 @@
+<p>
+  <%= link_to '控制台', web_sandbox_console.root_path %>
+</p>
+
+<h2>文件下载</h1>
+<div class="">
+  <%= form_tag web_sandbox_console.download_path, method: :get do %>
+    <table>
+      <tr>
+        <td>文件名</td>
+        <td>
+          <%= text_field_tag :file_name, '', style: "width: 400px;height: 35px;font-size: 15px;" %>
+        </td>
+        <td><%= submit_tag '提交', data: { disable_with: "已发送，处理中..." }, class: 'view-file-button' %></td>
+    </table>
+  <% end %>
+</div>
+
+<h4>说明：</h4>
+<div>
+  <pre>
+    1. 只可下载log目录下文件
+    2. 下载时文件名需要带上后缀如：production.log
+  </pre>
+</div>
