@@ -2,6 +2,15 @@ $(".output-content").empty();
 <% line_num_show = @total_line_num ? "原始文件总行数：#{@total_line_num}" : "" %>
 
 $(".output-content").append("<p>============ <%= Time.current %> 查找结果如下 <%= line_num_show %> ===============</p>");
+
+<% if @touch_grep_protect %>
+  $(".output-content").append("<p>PS: 由于过滤执行时间太长，已触发过滤保护，返回内容为最后1000行</p>");
+<% end %>
+
+<% if @content_is_trimed %>
+  $(".output-content").append("<p>PS: 当前返回内容太多，仅展示满足条件的1000行</p>");
+<% end %>
+
 <% @lines.each do |result| %>
   $(".output-content").append('<pre><%= escape_javascript result %></pre>');
 <% end %>

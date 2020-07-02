@@ -1,11 +1,13 @@
 module WebSandboxConsole
   class ViewFile
-    attr_accessor :file_or_dir     # 文件或目录
-    attr_accessor :start_line_num  # 起始行数
-    attr_accessor :end_line_num     # 结束行数
-    attr_accessor :sed_start_time   # 开始时间
-    attr_accessor :sed_end_time     # 结束时间
-    attr_accessor :grep_content     # 过滤内容
+    attr_accessor :file_or_dir         # 文件或目录
+    attr_accessor :start_line_num      # 起始行数
+    attr_accessor :end_line_num        # 结束行数
+    attr_accessor :sed_start_time      # 开始时间
+    attr_accessor :sed_end_time        # 结束时间
+    attr_accessor :grep_content        # 过滤内容
+    attr_accessor :touch_grep_protect  # 是否触发过滤保护
+    attr_accessor :content_is_trimed   # 内容是否有裁剪
 
     def initialize(opts = {})
       @file_or_dir     = opts[:file_or_dir]
@@ -14,6 +16,8 @@ module WebSandboxConsole
       @sed_start_time  = parse_time(opts[:sed_start_time])
       @sed_end_time    = parse_time(opts[:sed_end_time])
       @grep_content    = opts[:grep_content]
+      @touch_grep_protect = false
+      @content_is_trimed  = false
     end
 
     def view
@@ -120,8 +124,15 @@ module WebSandboxConsole
         else
           special_line_content
         end
-        
-        {lines: add_line_num(lines), total_line_num: cal_file_total_line_num}
+        # 修剪行数
+        lines = content_trim(lines)
+
+        {
+          lines: add_line_num(lines), 
+          total_line_num: cal_file_total_line_num,
+          touch_grep_protect: @touch_grep_protect,
+          content_is_trimed: @content_is_trimed
+        }
       end
     end
 
@@ -130,26 +141,53 @@ module WebSandboxConsole
       `wc -l < #{file_or_dir_path}`.to_i
     end
 
-    # 最后 xx 行内容
+    # 最后 xx 行
     def tail_any_line(num)
-      (`tail -n #{num} #{file_or_dir_path}`).split("\n")
+      tail_any_line_content(num).split("\n")
+    end
+
+    # 最后多少行内容
+    def tail_any_line_content(num)
+      `tail -n #{num} #{file_or_dir_path}`
     end
 
     # 按指定行返回
     def special_line_content
       File.readlines(file_or_dir_path)[(start_line_num - 1)..(end_line_num - 1)]
     end
+    
+    # 过滤超时保护 
+    def grep_timeout_protect
+      begin
+        Timeout::timeout(8) {yield}
+      rescue Timeout::Error => e
+        # 触发过滤保护
+        @touch_grep_protect = true
+        tail_any_line_content(1000)
+      end
+    end
 
     # 过滤文件
     def grep_file_content
       content = if @sed_start_time && @grep_content.present?
-        `sed -n '/#{@sed_start_time}/,/#{@sed_end_time}/p' #{file_or_dir_path} | grep '#{@grep_content}'`
+        grep_timeout_protect {`sed -n '/#{@sed_start_time}/,/#{@sed_end_time}/p' #{file_or_dir_path} | fgrep '#{@grep_content}'`}
       elsif @sed_start_time
-        `sed -n '/#{@sed_start_time}/,/#{@sed_end_time}/p' #{file_or_dir_path}`
+        grep_timeout_protect {`sed -n '/#{@sed_start_time}/,/#{@sed_end_time}/p' #{file_or_dir_path}`}
       else
-        `grep '#{@grep_content}' #{file_or_dir_path}`
+        grep_timeout_protect {`fgrep '#{@grep_content}' #{file_or_dir_path}`}
       end
       content.split("\n")
+    end
+    
+    # 修剪过滤内容
+    def content_trim(lines)
+      if lines.length > 1000
+        @content_is_trimed = true
+        # 内容太多时 只返回前1000行
+        lines.first(1000)
+      else
+        lines
+      end
     end
 
     # 添加行号
