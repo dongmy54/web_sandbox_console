@@ -1,5 +1,10 @@
 <h3>升级授权</h3>
 
+<p>
+  <%= link_to '获取令牌', fetch_token_path,format: 'json', remote: true %>
+  <span> PS: 注意获取令牌一天最多20次,有效期仅5分钟</span>
+</p>
+
 <div class="">
   <%= form_tag web_sandbox_console.auth_path, method: :post do %>
     <table>
