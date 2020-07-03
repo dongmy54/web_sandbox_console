@@ -19,7 +19,7 @@
  }
 
 .tip {
-  color: red;
+  color: #E35520;
   font-size: 12px;
 }
 
@@ -84,14 +84,14 @@
   }
 
   .clear-button{
-    background: #F9BF0E;
+    background: #20aee3;
     height: 30px;
     width: 100px;
     font-size: 15px;
     color: white;
     cursor: pointer;
     border-radius: 5px;
-    border: #F9BF0E;
+    border: #20aee3;
   }
 
   .send-button{
@@ -104,13 +104,13 @@
   }
 
   .reset-button{
-    background: #F9BF0E;
+    background: #20aee3;
     color: white;
     height: 30px;
     font-size: 15px;
     color: 15px;
     cursor: pointer;
-    border: #F9BF0E;
+    border: #20aee3;
   }
 
   button,input{

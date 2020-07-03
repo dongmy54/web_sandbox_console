@@ -31,28 +31,28 @@
               <li>
                 <%= link_to root_path, class: 'waves-effect waves-dark' do %>
                   <i class="fa fa-bookmark-o"></i>
-                  <span class="hide-menu">执行代码</span>
+                  <span class="hide-menu <%= action_name == 'index' ? 'menu-active' : '' %>">执行代码</span>
                 <% end %>
               </li>
 
               <li>
                 <%= link_to web_sandbox_console.view_file_path, class: 'waves-effect waves-dark' do %>
                   <i class="fa fa-bookmark-o"></i>
-                  <span class="hide-menu">查看文件</span>
+                  <span class="hide-menu <%= action_name == 'view_file' ? 'menu-active' : '' %>">查看文件</span>
                 <% end %>
               </li>
 
               <li>
                 <%= link_to web_sandbox_console.download_page_path, class: 'waves-effect waves-dark' do %>
                   <i class="fa fa-bookmark-o"></i>
-                  <span class="hide-menu">下载文件</span>
+                  <span class="hide-menu <%= action_name == 'download_page' ? 'menu-active' : '' %>">下载文件</span>
                 <% end %>
               </li>
 
               <li>
                 <%= link_to web_sandbox_console.auth_page_path, class: 'waves-effect waves-dark' do %>
                   <i class="fa fa-bookmark-o"></i>
-                  <span class="hide-menu">升级授权</span>
+                  <span class="hide-menu <%= action_name == 'auth_page' ? 'menu-active' : '' %>">升级授权</span>
                 <% end %>
               </li>
             </ul>
