@@ -19,7 +19,7 @@ $ bundle
 ```
 
 此时，如果是在本地，你访问 `http://localhost:3000/web_sandbox_console` 就能看到web控制台了,下面这个样子。
-![Snip20200625_1.png](https://i.loli.net/2020/06/25/ZD5Ns2HzfME4Whx.png)
+![Snip20200703_1.png](https://i.loli.net/2020/07/03/62JD5ErcPbAwHSn.png)
 
 ## 配置
 ```
@@ -79,8 +79,7 @@ end
 > 提交后代码会立即执行；如果点击异步执行，则代码会在后台异步执行，这对于需要执行非常耗时的代码，强烈建议异步执行；
 
 2. 升级权限
-![Snip20200625_2.png](https://i.loli.net/2020/06/25/GQXlpwLryjtVfdO.png)
-
+![Snip20200703_4.png](https://i.loli.net/2020/07/03/KNiToIBHan5ub7P.png)
 ```
 通常你能做的操作就是，查查数据等，数据的所有操作都不会写入到数据库，这样很安全；但是每当你需要修改数据时，还是需要让运维处理；为了满足可以数据写入、和安全性的要求；开发了升级权限这个功能。
 
@@ -107,7 +106,7 @@ puts encode_text
 ```
 
 ### 文件查看
-![Snip20200625_3.png](https://i.loli.net/2020/06/25/ZtaeGlUpc4fJFgW.png)
+![Snip20200703_2.png](https://i.loli.net/2020/07/03/zFMjpRSX8fCDQ2i.png)
 1. 目录和文件
 
 > 你可以查看一个目录下有哪些文件夹或文件，你也可以直接查看文件的内容，默认返回一个文件的前100行
@@ -130,7 +129,8 @@ PS: a. 在过滤文件（过滤内容/过滤时间）的时候，此时指定行
 > 默认情况，只能查看日志文件或目录，当然你也可以去配置做调整。
 
 ### 日志下载
-下载路径：web_sandbox_console/download/文件名；比如：http://localhost:3000/web_sandbox_console/download/log_p.log
+![Snip20200703_3.png](https://i.loli.net/2020/07/03/csW5OfEhPVeSbJz.png)
+你可以直接输入文件名（需要带后缀）下载日志
 
 PS: 你可以利用此功能导出数据，首先在代码执行中，导出csv文件，这个文件会放在log目录下（出于安全考虑，即使你书写的文件路径不是log目录下，也会转换到log路径），你就可以像下载日志那样下载了。
 
