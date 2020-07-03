@@ -1,16 +1,72 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Web sandbox console</title>
-  <%= stylesheet_link_tag    "web_sandbox_console/application", media: "all" %>
-  <%= javascript_include_tag "web_sandbox_console/application" %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
-  <div class="container">
-    <%= yield %>
-  </div>
-</body>
+  <head>
+    <title>Web sandbox console</title>
+    <%= stylesheet_link_tag    "web_sandbox_console/application", media: "all" %>
+    <%= javascript_include_tag "web_sandbox_console/application" %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
+    <div id="main-wrapper">
+      <header class="topbar">
+        <nav class="navbar top-navbar">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="/web_sandbox_console">
+              <b>
+                <img src="/assets/web_sandbox_console/logo-icon.png" />
+              </b>
+              <span style="left-padding: 10px;">运维控制台</span>
+           </a>
+          </div>
+
+          <div class="navbar-collapse">
+          </div>
+        </nav>
+      </header>
+
+      <aside class="left-sidebar">
+        <div class="scroll-sidebar ps">
+          <nav class="sidebar-nav">
+            <ul id="sidebar-nav">
+              <li>
+                <%= link_to root_path, class: 'waves-effect waves-dark' do %>
+                  <i class="fa fa-bookmark-o"></i>
+                  <span class="hide-menu">执行代码</span>
+                <% end %>
+              </li>
+
+              <li>
+                <%= link_to web_sandbox_console.view_file_path, class: 'waves-effect waves-dark' do %>
+                  <i class="fa fa-bookmark-o"></i>
+                  <span class="hide-menu">查看文件</span>
+                <% end %>
+              </li>
+
+              <li>
+                <%= link_to web_sandbox_console.download_page_path, class: 'waves-effect waves-dark' do %>
+                  <i class="fa fa-bookmark-o"></i>
+                  <span class="hide-menu">下载文件</span>
+                <% end %>
+              </li>
+
+              <li>
+                <%= link_to web_sandbox_console.auth_page_path, class: 'waves-effect waves-dark' do %>
+                  <i class="fa fa-bookmark-o"></i>
+                  <span class="hide-menu">升级授权</span>
+                <% end %>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </aside>
+
+      <div class="page-wrapper" style="min-height: 800px;">
+        <div class="container-fluid">
+          <%= yield %>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>
 
 <script type="text/javascript">

@@ -5,6 +5,8 @@ module WebSandboxConsole
     before_action :restrict_ip
     http_basic_authenticate_with name: WebSandboxConsole.http_basic_auth[:name], password: WebSandboxConsole.http_basic_auth[:password] if WebSandboxConsole.http_basic_auth.present?
 
+    #layout "application_n"
+
     def index
     end
 

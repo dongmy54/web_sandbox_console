@@ -1,12 +1,5 @@
-# 授权
-<p>
-  <%= link_to '控制台', web_sandbox_console.root_path %>
-  <%= link_to '获取令牌', web_sandbox_console.fetch_token_path(:format => "js"), remote: true %> 
-  <span> PS: 注意获取令牌一天最多20次,有效期仅5分钟</span>
-</p>
+<h3>升级授权</h3>
 
-
-<h2>授权申请</h1>
 <div class="">
   <%= form_tag web_sandbox_console.auth_path, method: :post do %>
     <table>

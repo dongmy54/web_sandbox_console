@@ -64,7 +64,8 @@
 }
 
 .output-content{
-    height: 600px;
+    min-height: 800px;
+    height: 100%;
     font-size: 14px;
     background-color: #272822;
     color: #F8F8F2;
@@ -83,14 +84,14 @@
   }
 
   .clear-button{
-    background: red;
+    background: #F9BF0E;
     height: 30px;
     width: 100px;
     font-size: 15px;
     color: white;
     cursor: pointer;
     border-radius: 5px;
-    border: red;
+    border: #F9BF0E;
   }
 
   .send-button{
@@ -103,18 +104,20 @@
   }
 
   .reset-button{
-    background: red;
+    background: #F9BF0E;
     color: white;
     height: 30px;
     font-size: 15px;
     color: 15px;
     cursor: pointer;
-    border: red;
+    border: #F9BF0E;
   }
 
   button,input{
    outline:none;
  }
+
+
 
  button:focus,input:focus,textarea:focus {
    outline: none;
