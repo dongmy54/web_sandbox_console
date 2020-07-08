@@ -5,8 +5,6 @@ module WebSandboxConsole
     before_action :restrict_ip
     http_basic_authenticate_with name: WebSandboxConsole.http_basic_auth[:name], password: WebSandboxConsole.http_basic_auth[:password] if WebSandboxConsole.http_basic_auth.present?
 
-    #layout "application_n"
-
     def index
     end
 
@@ -50,17 +48,12 @@ module WebSandboxConsole
         return redirect_to download_page_path
       end
 
+      # 打包
+      `tar czf #{file_full_path}.tar.gz #{file_full_path}`
       # 如果是csv文件，需删除
-      if file_full_path.split(".").last == 'csv'
-        file = File.open(file_full_path, "rb")
-        contents = file.read
-        file.close
+      File.delete(file_full_path) if file_full_path.split(".").last == 'csv'
 
-        File.delete(file_full_path)
-        send_data contents, filename: params[:file_name]
-      else
-        send_file file_full_path
-      end
+      send_file "#{file_full_path}.tar.gz"
     end
 
   end
