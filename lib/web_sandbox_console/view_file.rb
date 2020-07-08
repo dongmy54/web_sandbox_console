@@ -193,7 +193,19 @@ module WebSandboxConsole
     # 添加行号
     def add_line_num(lines)
       start_num = is_big_file? ? 1 : start_line_num
-      lines.each_with_index.map{|line, index| "#{index + start_num}:  #{line}"}
+      lines.each_with_index.map do |line, index| 
+        line = "#{index + start_num}:  #{line}"
+        hightlight_grep_content(line)
+      end
+    end
+
+    # 高亮内容
+    def hightlight_grep_content(content)
+      if @grep_content.present?
+        content.gsub(@grep_content.to_s, "<span style='color: #E35520;'> #{@grep_content}</span>").html_safe
+      else
+        content
+      end
     end
 
     private
