@@ -88,7 +88,8 @@ module WebSandboxConsole
         # 重写方法 以写日志方式 写数据
         def open(filename, mode="r", **options)
           # 无论输入什么路径 都只会在log下创建文件
-          file_path = "#{Rails.root}/log/#{Time.current.strftime("%F-%T")}_#{filename.split("/").last}"
+          basename = File.basename(filename, ".*")
+          file_path = "#{Rails.root}/log/#{basename}.csv"
           logger = Logger.new(file_path)
           logger.formatter = proc {|severity, datetime, progname, msg| msg}
 

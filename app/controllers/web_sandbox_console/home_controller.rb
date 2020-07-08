@@ -49,7 +49,18 @@ module WebSandboxConsole
         flash[:notice] = '文件不存在，请检查文件名；或在其它服务器请多次尝试'
         return redirect_to download_page_path
       end
-      send_file file_full_path
+
+      # 如果是csv文件，需删除
+      if file_full_path.split(".").last == 'csv'
+        file = File.open(file_full_path, "rb")
+        contents = file.read
+        file.close
+
+        File.delete(file_full_path)
+        send_data contents, filename: params[:file_name]
+      else
+        send_file file_full_path
+      end
     end
 
   end
