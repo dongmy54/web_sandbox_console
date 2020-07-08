@@ -5,6 +5,7 @@ module WebSandboxConsole
       sanitize_constants
       sanitize_instance_methods
       sanitize_class_methods
+      sanitize_logger_new
       sanitize_csv
     end
 
@@ -66,17 +67,39 @@ module WebSandboxConsole
       end
       hash1
     end
-    
+
+    # 发现代码 中有 Logger.new(Rails.root.join('log', 'hubar')) 写法, 会 触发 File.open方法
+    # 封装后避免调用 File.open(禁用)
+    def sanitize_logger_new
+      Logger.instance_eval do
+        def new(logdev, shift_age = 0, shift_size = 1048576)
+          instance = allocate
+          instance.send(:initialize, logdev.to_s, shift_age, shift_size)
+          instance
+        end
+      end
+    end
+
     # 净化 csv
     def sanitize_csv
       require 'csv' unless defined? CSV
+
       CSV.instance_eval do
-        alias :old_open :open
-        
-        def open(filename, mode="r", **options, &block)
+        # 重写方法 以写日志方式 写数据
+        def open(filename, mode="r", **options)
           # 无论输入什么路径 都只会在log下创建文件
-          filename = "#{Rails.root}/log/#{filename.split("/").last}" 
-          old_open(filename, mode, **options, &block)
+          file_path = "#{Rails.root}/log/#{Time.current.strftime("%F-%T")}_#{filename.split("/").last}"
+          logger = Logger.new(file_path)
+          logger.formatter = proc {|severity, datetime, progname, msg| msg}
+
+          logger.instance_exec do
+            # 支持类型 csv 数据写入方式
+            def << (data_arr)
+              self.info data_arr.join(",") + "\n"
+            end
+          end
+
+          yield(logger)
         end
       end
     end

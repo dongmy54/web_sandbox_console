@@ -34,7 +34,7 @@ module WebSandboxConsole
   # 内置 类方法 黑名单
   CLASS_METHOD_BUILT_IN_BLACKLIST = {
     Kernel: %i(system exec `),
-    File: %i(chmod chown new delete read write),
+    File: %i(chmod chown new delete read write open),
     Dir: %i(new delete mkdir)
   }
 
