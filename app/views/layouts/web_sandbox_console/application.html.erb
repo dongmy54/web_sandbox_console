@@ -55,8 +55,16 @@
                   <span class="hide-menu <%= action_name == 'auth_page' ? 'menu-active' : '' %>">升级授权</span>
                 <% end %>
               </li>
+
+              <li>
+                <%= link_to "https://github.com/dongmy54/web_sandbox_console", target: "_blank", class: 'waves-effect waves-dark' do %>
+                  <i class="fa fa-bookmark-o"></i>
+                  <span class="hide-menu <%= action_name == 'auth_page' ? 'menu-active' : '' %>">说明文档</span>
+                <% end %>
+              </li>
             </ul>
           </nav>
+
         </div>
       </aside>
 
