@@ -1,6 +1,10 @@
 module WebSandboxConsole
   class ApplicationController < ActionController::Base
     protect_from_forgery with: :exception
+    
+    before_action :restrict_ip
+    http_basic_authenticate_with name: WebSandboxConsole.http_basic_auth[:name].to_s, password: WebSandboxConsole.http_basic_auth[:password].to_s if WebSandboxConsole.http_basic_auth.present?
+
 
     # 限制ip
     def restrict_ip

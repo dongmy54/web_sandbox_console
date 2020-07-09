@@ -1,0 +1,5 @@
+web_sandbox_console:
+  http_basic_auth:
+    name: dmy
+    password: 123456
+  public_key: "-----BEGIN PUBLIC KEY-----\nMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDMbJOE1vQT1jFpaH1GPYzdRJN/\nLh8VePmzXs5BYOLHB0xIjArL1NlXMbCJ+AS2rv3/oHIOdHhEuZw0tmm9DhG100R8\nRjBpsEKCDI88jl9qRkFmD3CVk8XQXv6c2IkRZCYSTvgDkmnKAlORksfw+p0cR2AQ\nlAtAsNsNviKYBzXKfQIDAQAB\n-----END PUBLIC KEY-----\n"
