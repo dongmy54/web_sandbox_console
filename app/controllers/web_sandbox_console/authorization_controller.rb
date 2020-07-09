@@ -8,6 +8,8 @@ module WebSandboxConsole
     def fetch_token
       @token = SecureRandom.uuid
       save_cache_token(@token)
+      flash[:notice] = "令牌: #{@token}，此令牌先保存，后续使用。"
+      redirect_to auth_page_path
     end
 
     # 授权
@@ -42,7 +44,7 @@ module WebSandboxConsole
         
         if times > 20
           flash[:notice] = '一天内获取令牌不允许超过20次'
-          rediect_to root_path
+          redirect_to root_path
         end
         cache.write('fetch_token_times', times + 1)
       end

@@ -1,27 +1,65 @@
 <h3>执行代码</h3>
 
-<div class="console margin-b-20">
+<style type="text/css">
+  .wrapper-console {
+    position: relative;
+    top: 8px;
+    width: 100%;
+    height: 300px;
+ }
+
+ .left {
+    height: 100%;
+    /* 为了不占用绝对定位的宽度 这里计算下宽度*/
+    width: calc(100% - 200px);
+ }
+
+.right {
+    position: absolute;
+    width: 180px;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    padding-left: 15px;
+}
+</style>
+
+
+<div class="wrapper-console">
   <%= form_tag(web_sandbox_console.eval_code_path, remote: true, class: 'form')  do %>
-    <div class= "fl text_area_div">
-      <%= text_area_tag :code, '', class: 'text_area_box'%>
+    <div class= "left">
+      <%= text_area_tag :code, '# 这里输入ruby代码...', class: 'text_area_box'%>
     </div>
     
-    <div class="submit_div">
-      <div class="fr">
-        <div class="margin-t-100"><input type="reset" value="重置" class='reset-button' %></div>
-
-        <div class="margin-t-10">
-          <% if session[:pass_auth] %>
-            <span class="tip">授权成功(当前修改将写入数据库)</span>
-          <% end %>
-          <%= submit_tag '提交', data: { disable_with: "已发送，处理中..." }, class: 'send-button' %></div>
-        <div class="margin-t-10"><%= submit_tag '异步执行', data: { disable_with: "已发送，处理中..." }, class: 'send-button' %></div>
+    <div class="right">
+      <div style="position: absolute;bottom: 0;">
+        <% if session[:pass_auth] %>
+          <p class="tip">授权成功</p>
+          <p class="tip">(当前修改将写入数据库)</p>
+        <% end %>
+        <%= submit_tag '提交', data: { disable_with: "已发送，处理中..." }, class: 'send-button margin-t-10' %>
+        <%= submit_tag '异步执行', data: { disable_with: "已发送，处理中..." }, class: 'send-button margin-t-10' %>
       </div>
     </div>
   <% end %>
 </div>
 
-<%= button_tag '清除输出', type: 'button', onclick: "$('.output-content').empty();", class: 'clear-button' %>
+<div style="margin-top: 50px;">
+    <%= button_tag '清除输出', type: 'button', onclick: "$('.output-content').empty();", class: 'clear-button' %>
+<div>
 
 <div class="output-content">
 </div>
+
+
+<script>
+  var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+    mode: "text/x-ruby",
+    matchBrackets: true,
+    indentUnit: 2,
+    indentWithTabs: true,
+    theme: 'lucario',
+    tabSize: 2,
+    lineNumbers: true
+  });
+</script>

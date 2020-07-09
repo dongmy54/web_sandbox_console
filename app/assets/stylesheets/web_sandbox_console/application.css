@@ -64,15 +64,28 @@
 }
 
 .output-content{
-    min-height: 800px;
-    height: 100%;
-    font-size: 14px;
-    background-color: #272822;
-    color: #F8F8F2;
-    overflow: auto;
-    line-height: 12px;
-    padding-left: 10px;
-    margin-top: 20px;
+  min-height: 800px;
+  height: 100%;
+  font-size: 14px;
+  background-color: #272822;
+  color: #F8F8F2;
+  overflow: auto;
+  line-height: 12px;
+  padding-left: 10px;
+  margin-top: 20px;
+  padding-top: 10px;
+}
+
+  .font-color{
+    color: rgba(0,0,0,.9);
+  }
+
+  .output-content pre{
+    border: none;
+  }
+
+  .no-border{
+    border: none;
   }
 
   .text_area_box{
@@ -95,12 +108,13 @@
   }
 
   .send-button{
-    background: #272822;
+    background: #20aee3;
     height: 30px;
     width: 150px;
     font-size: 15px;
     color: white;
     cursor: pointer;
+    border: #20aee3;
   }
 
   .reset-button{

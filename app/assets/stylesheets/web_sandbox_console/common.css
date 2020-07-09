@@ -1,6 +1,6 @@
   body {
     background: #fff;
-    font-family: "Montserrat", sans-serif;
+    font-family: "Montserrat", sans-serif !important;
     margin: 0;
     overflow-x: hidden;
     color: #67757c;
