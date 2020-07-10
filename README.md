@@ -19,7 +19,8 @@ $ bundle
 ```
 
 此时，如果是在本地，你访问 `http://localhost:3000/web_sandbox_console` 就能看到web控制台了,下面这个样子。
-![Snip20200703_1.png](https://i.loli.net/2020/07/03/62JD5ErcPbAwHSn.png)
+PS：代码输入框支持代码高亮，你可以像在代码编辑器一样自由编写代码
+![Snip20200710_1.png](https://i.loli.net/2020/07/10/XqolSYAIJGKa5xg.png)
 
 ## 配置
 ```
