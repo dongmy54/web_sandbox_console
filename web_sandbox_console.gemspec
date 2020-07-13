@@ -10,8 +10,8 @@ Gem::Specification.new do |s|
   s.authors     = ["dongmingyan"]
   s.email       = ["dongmingyan01@gmail.com"]
   s.homepage    = "https://github.com/dongmy54/web_sandbox_console"
-  s.summary     = "一个安全、方便的web 控制台"
-  s.description = "工作中许多时候，都需要我们连到服务器进入rails c下查询或一些数据。当运维人员时间比较充足的时候，情况还相对较好；如果一个运维人员，同时负责许多台服务器，让其帮忙负责查询就会浪费很大的一部分时间；为了解决这个问题，我想找到一种即安全、又方便的查询控制台，搜索了一些gem后，发现并没有符合我预期的gem,于是决定写一个相关功能的gem，旨在提供一个安全、方便的web 控制台."
+  s.summary     = "A secure, convenient web console"
+  s.description = "At work, many times, we need to connect to the server to enter the rails c query or some data. When the operator has plenty of time, the situation is relatively good; if an operator is responsible for many servers at the same time, it will waste a lot of time to help with the query; to solve this problem, I want to find a secure and convenient query console, after searching some gem, found and did not meet my expectations gem, so decided to write a related function of the console designed to provide a safe, convenient web."
   s.license     = "MIT"
 
   s.files = Dir["{app,config,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
