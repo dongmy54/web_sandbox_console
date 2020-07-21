@@ -44,6 +44,7 @@ module WebSandboxConsole
     def runner_code
       str =<<-CODE
         WebSandboxConsole.init_safe_env
+        WebSandboxConsole.logger_sql("#{self.uuid}")
         result = nil
         begin
           #{self.pass_auth ? no_rollback_code : rollback_code}
@@ -131,7 +132,8 @@ module WebSandboxConsole
     # 最终结果
     def get_result
       if @stdout.present?
-        stdout_arr = @stdout.to_s.split("\n")
+        stdout_arr = ['------------ 打印值 ----------']
+        stdout_arr.concat(@stdout.to_s.split("\n"))
         stdout_arr << '------------ 返回值 ----------'
         stdout_arr.concat(return_result_arr)
       else
