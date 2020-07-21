@@ -122,7 +122,7 @@ module WebSandboxConsole
 
     # 返回结果
     def return_result_arr
-      last_10_lines = `tail -n 10 #{WebSandboxConsole.log_path} | grep #{self.uuid}`
+      last_10_lines = `tail -n 100 #{WebSandboxConsole.log_path} | grep #{self.uuid}`
       
       last_10_lines.split("\n").map do |line|
         line.split("#{self.uuid}:").last.split("|||")
