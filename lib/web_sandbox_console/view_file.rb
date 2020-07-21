@@ -13,8 +13,8 @@ module WebSandboxConsole
       @file_or_dir     = opts[:file_or_dir]
       @start_line_num  = (opts[:start_line_num].presence || 1).to_i
       @end_line_num    = (opts[:end_line_num].presence || 100).to_i
-      @sed_start_time  = parse_time(opts[:sed_start_time])
-      @sed_end_time    = parse_time(opts[:sed_end_time])
+      @sed_start_time  = opts[:sed_start_time]
+      @sed_end_time    = opts[:sed_end_time]
       @grep_content    = opts[:grep_content]
       @touch_grep_protect = false
       @content_is_trimed  = false
@@ -117,6 +117,7 @@ module WebSandboxConsole
       if is_directory?(file_or_dir_path)
         files_in_dir
       else # 文件
+        parse_start_and_end_time
         lines = if need_grep?
           grep_file_content
         elsif is_big_file?
@@ -210,8 +211,23 @@ module WebSandboxConsole
 
     private
       # 解析时间
-      def parse_time(str)
-        DateTime.parse(str).strftime("%FT%T") rescue nil
+      def parse_start_and_end_time
+        formatter = datetime_formatter
+        @sed_start_time = DateTime.parse(@sed_start_time).strftime(formatter) rescue nil
+        @sed_end_time   = DateTime.parse(@sed_end_time).strftime(formatter) rescue nil
+      end
+
+      # 日志时间格式是否为标准格式
+      def logger_datetime_is_default_formatter
+        # 抽取日志的第二行
+        logger_line   = `head -n 2 #{file_or_dir_path} | tail -n 1`
+        datatime_part = logger_line.split(/DEBUG:|INFO:|WARN:|ERROR:|FATAL:|UNKNOWN:/).first.to_s
+        datatime_part.include?("T")
+      end
+      
+      # 解析日期格式
+      def datetime_formatter
+        logger_datetime_is_default_formatter ? "%FT%T" : "%F %T"
       end
 
 
