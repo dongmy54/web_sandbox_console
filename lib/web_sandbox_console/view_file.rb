@@ -33,6 +33,7 @@ module WebSandboxConsole
     def view
       begin
         check_param
+        correction_line_num
         file_or_dir_exists
         check_blacklist
         check_only_view_log
@@ -46,6 +47,13 @@ module WebSandboxConsole
     def check_param
       raise ViewFileError, '文件或目录参数不能为空' if file_or_dir.blank?
       raise ViewFileError, "过滤内容中不能出现单引号" if grep_content.to_s.include?("'")
+    end
+
+    # 纠正起始行数
+    def correction_line_num
+      if @start_line_num > @end_line_num
+        @end_line_num = @start_line_num + 100
+      end
     end
 
     # 转换成项目路径
