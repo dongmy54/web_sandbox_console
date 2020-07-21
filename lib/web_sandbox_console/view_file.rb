@@ -8,6 +8,14 @@ module WebSandboxConsole
     attr_accessor :grep_content        # 过滤内容
     attr_accessor :touch_grep_protect  # 是否触发过滤保护
     attr_accessor :content_is_trimed   # 内容是否有裁剪
+    
+    # 页面相关提示
+    PageTips = {
+      touch_grep_protect: "由于过滤执行时间太长，已触发过滤保护，返回内容为最后1000行",
+      content_is_trimed: "当前返回内容太多，仅展示满足条件的1000行",
+      is_big_file_return: "当前文件视为大文件，返回最后1000行",
+      special_line_return: "当前按指定行数返回,若未指定行数，则默认返回文件前100行"
+    }.freeze
 
     def initialize(opts = {})
       @file_or_dir     = opts[:file_or_dir]
@@ -16,8 +24,10 @@ module WebSandboxConsole
       @sed_start_time  = opts[:sed_start_time]
       @sed_end_time    = opts[:sed_end_time]
       @grep_content    = opts[:grep_content]
-      @touch_grep_protect = false
-      @content_is_trimed  = false
+      @touch_grep_protect  = false
+      @content_is_trimed   = false
+      @is_big_file_return  = false
+      @special_line_return = false
     end
 
     def view
@@ -121,8 +131,10 @@ module WebSandboxConsole
         lines = if need_grep?
           grep_file_content
         elsif is_big_file?
+          @is_big_file_return = true
           tail_any_line(1000)
         else
+          @special_line_return = true
           special_line_content
         end
         # 修剪行数
@@ -132,7 +144,9 @@ module WebSandboxConsole
           lines: add_line_num(lines), 
           total_line_num: cal_file_total_line_num,
           touch_grep_protect: @touch_grep_protect,
-          content_is_trimed: @content_is_trimed
+          content_is_trimed: @content_is_trimed,
+          is_big_file_return: @is_big_file_return,
+          special_line_return: @special_line_return
         }
       end
     end

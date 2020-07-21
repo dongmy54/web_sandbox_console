@@ -22,11 +22,8 @@ module WebSandboxConsole
 
     # 查看文件
     def do_view_file
-      results             = ViewFile.new(params).view
-      @lines              = results[:lines]
-      @total_line_num     = results[:total_line_num]
-      @touch_grep_protect = results[:touch_grep_protect]
-      @content_is_trimed  = results[:content_is_trimed]
+      @result_hash = ViewFile.new(params).view
+      @tip_hash    = WebSandboxConsole::ViewFile::PageTips
     end
 
     # 下载文件页面
