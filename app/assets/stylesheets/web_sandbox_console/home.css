@@ -21,3 +21,31 @@
   color: white;
   cursor: pointer;
 }
+
+/* 执行代码页面样式 */
+.wrapper-console {
+  position: relative;
+  top: 8px;
+  width: 100%;
+  height: 300px;
+ }
+
+.left {
+  height: 100%;
+  /* 为了不占用绝对定位的宽度 这里计算下宽度*/
+  width: calc(100% - 200px);
+}
+
+.right {
+  position: absolute;
+  width: 180px;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  padding-left: 15px;
+}
+
+/* 选中后code背景色*/
+.CodeMirror-selected {
+  background: #20aee3 !important;
+}
