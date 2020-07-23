@@ -7,6 +7,7 @@ module WebSandboxConsole
       sanitize_class_methods
       sanitize_logger_new
       sanitize_csv
+      compatible_file_cache
       blacklist_method_remind
     end
 
@@ -108,6 +109,19 @@ module WebSandboxConsole
           end
 
           yield(logger)
+        end
+      end
+    end
+
+    # 兼容文件缓存
+    def compatible_file_cache
+      ActiveSupport::Cache::FileStore.class_exec do
+        def write_entry(key, entry, options)
+          true
+        end
+
+        def delete_entry(key, options)
+          true
         end
       end
     end
