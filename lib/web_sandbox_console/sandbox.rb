@@ -43,17 +43,18 @@ module WebSandboxConsole
 
     def runner_code
       str =<<-CODE
+        WebSandboxConsole.current_uuid("#{self.uuid}")
         WebSandboxConsole.init_safe_env
-        WebSandboxConsole.logger_sql("#{self.uuid}")
+        WebSandboxConsole.logger_sql
         result = nil
         begin
           #{self.pass_auth ? no_rollback_code : rollback_code}
         rescue Exception => e
-          WebSandboxConsole.log_p(e, "#{self.uuid}")
+          WebSandboxConsole.log_p(e)
         rescue SyntaxError => e
-          WebSandboxConsole.log_p(e, "#{self.uuid}")
+          WebSandboxConsole.log_p(e)
         end
-        WebSandboxConsole.log_p(result, "#{self.uuid}")
+        WebSandboxConsole.log_p(result)
       CODE
     end
 
