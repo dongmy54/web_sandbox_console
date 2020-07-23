@@ -8,6 +8,7 @@ module WebSandboxConsole
       sanitize_logger_new
       sanitize_csv
       compatible_file_cache
+      compatible_i18n_translate
       blacklist_method_remind
     end
 
@@ -123,6 +124,16 @@ module WebSandboxConsole
         def delete_entry(key, options)
           true
         end
+      end
+    end
+
+    # 兼容翻译
+    def compatible_i18n_translate
+      I18n.instance_exec do
+        def translate(*args)
+          "ActiveRecord::RecordInvalid: 校验失败"
+        end
+        alias :t :translate
       end
     end
 
