@@ -7,17 +7,12 @@ module WebSandboxConsole
       sanitize_class_methods
       sanitize_logger_new
       sanitize_csv
+      blacklist_method_remind
     end
 
     # 净化 类方法
     def sanitize_class_methods
-      blacklist = if class_method_blacklist
-        merge_method_hash(CLASS_METHOD_BUILT_IN_BLACKLIST, class_method_blacklist)
-      else
-        CLASS_METHOD_BUILT_IN_BLACKLIST
-      end
-
-      blacklist.each do |klass, methods|
+      class_method_blacklists.each do |klass, methods|
         klass = Object.const_get(klass)
         methods.each do |method|
           next if klass.singleton_methods.exclude?(method)
@@ -28,18 +23,30 @@ module WebSandboxConsole
 
     # 净化 实例方法
     def sanitize_instance_methods
-      blacklist = if instance_method_blacklist
-        merge_method_hash(INSTANT_METOD_BUILT_IN_BLACKLIST,instance_method_blacklist)
-      else
-        INSTANT_METOD_BUILT_IN_BLACKLIST
-      end
-
-      blacklist.each do |klass, methods|
+      instance_method_blacklists.each do |klass, methods|
         klass = Object.const_get(klass)
         methods.each do |method|
           next if (klass != Kernel) && klass.instance_methods.exclude?(method)
           klass.send(:undef_method, method)
         end
+      end
+    end
+
+    # 类方法黑名单列表
+    def class_method_blacklists
+      blacklist = if class_method_blacklist
+        merge_method_hash(CLASS_METHOD_BUILT_IN_BLACKLIST, class_method_blacklist)
+      else
+        CLASS_METHOD_BUILT_IN_BLACKLIST
+      end
+    end
+
+    # 实例方法黑名单列表
+    def instance_method_blacklists
+      blacklist = if instance_method_blacklist
+        merge_method_hash(INSTANT_METOD_BUILT_IN_BLACKLIST,instance_method_blacklist)
+      else
+        INSTANT_METOD_BUILT_IN_BLACKLIST
       end
     end
 
@@ -101,6 +108,34 @@ module WebSandboxConsole
           end
 
           yield(logger)
+        end
+      end
+    end
+
+    # 当拦截黑名单方法时提醒
+    def blacklist_method_remind
+      Kernel.class_exec do
+        # 发现此处method_missing Array 没有flatten方法
+        def flatten_arr(arr)
+          new_arr = []
+          arr.each do |e|
+            if e.is_a?(Array)
+              new_arr.concat(flatten_arr(e))
+            else
+              new_arr << e
+            end
+          end
+          new_arr
+        end
+
+        def method_missing(name,*params)
+          class_methods    = WebSandboxConsole.class_method_blacklists.values
+          instance_methods = WebSandboxConsole.instance_method_blacklists.values
+          
+          if flatten_arr([class_methods, instance_methods]).include?(name.to_sym)
+            puts "PS：当前代码执行过程中可能调用了黑名单方法，导致本次报错，请仔细检查..."
+          end
+          super
         end
       end
     end

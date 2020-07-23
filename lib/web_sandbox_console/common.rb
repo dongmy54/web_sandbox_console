@@ -1,6 +1,6 @@
 module WebSandboxConsole
   module Common
-    
+
     # logger sql语句
     def logger_sql(uuid = nil)
       logger = fetch_logger
