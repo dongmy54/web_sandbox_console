@@ -14,14 +14,16 @@ module WebSandboxConsole
     end
 
     # uuid 方便取出日志
-    def log_p(msg_or_exce)
+    def log_p(msg_or_exce, is_general_text = false)
       uuid   = current_uuid
       logger = fetch_logger
-
-      if msg_or_exce.respond_to?(:message)
+      
+      if msg_or_exce.respond_to?(:message) # 异常
         logger.info "#{uuid}:" + msg_or_exce.message 
         logger.info "#{uuid}:" + msg_or_exce.backtrace.join("|||")
-      else
+      elsif is_general_text  # 普通文本
+        logger.info "#{uuid}:" + msg_or_exce.inspect
+      else                   # 返回值
         logger.info "#{uuid}: => " + msg_or_exce.inspect
       end
     end

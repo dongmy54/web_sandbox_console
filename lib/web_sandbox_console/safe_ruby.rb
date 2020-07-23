@@ -133,7 +133,8 @@ module WebSandboxConsole
           instance_methods = WebSandboxConsole.instance_method_blacklists.values
           
           if flatten_arr([class_methods, instance_methods]).include?(name.to_sym)
-            puts "PS：当前代码执行过程中可能调用了黑名单方法，导致本次报错，请仔细检查..."
+            msg = "PS：当前代码执行过程中可能调用了黑名单方法，导致本次报错，请仔细检查..."
+            WebSandboxConsole.log_p(msg, true)
           end
           super
         end
