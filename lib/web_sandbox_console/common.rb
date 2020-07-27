@@ -8,7 +8,7 @@ module WebSandboxConsole
     # logger sql语句
     def logger_sql
       logger = fetch_logger
-      logger.level = :debug
+      logger.level = 0
       logger.formatter = proc {|severity, time, progname, msg|  "#{current_uuid}: #{msg}\n"}
       ActiveRecord::Base.logger = logger
     end
