@@ -171,7 +171,7 @@ module WebSandboxConsole
 
     # 最后多少行内容
     def tail_any_line_content(num)
-      `tail -n #{num} #{file_or_dir_path}`
+      `tail -n #{num} #{file_or_dir_path}`.encode('UTF-8', invalid: :replace)
     end
 
     # 按指定行返回
@@ -199,7 +199,7 @@ module WebSandboxConsole
       else
         grep_timeout_protect {`fgrep '#{@grep_content}' #{file_or_dir_path}`}
       end
-      content.split("\n")
+      content.encode('UTF-8', invalid: :replace).split("\n")
     end
     
     # 修剪过滤内容
